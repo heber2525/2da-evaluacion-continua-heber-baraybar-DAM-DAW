@@ -24,7 +24,6 @@ public class Main {
     public static void main(String[] args) {
         cargarDatos();
         menu();
-        hola..........
     }
 
     private static void cargarDatos(){
