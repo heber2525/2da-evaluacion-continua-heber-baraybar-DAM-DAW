@@ -5,7 +5,6 @@ import biblioteca.simple.modelo.Producto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector; // ← Import innecesario aquí (no se usa en el código actual)
 
 // Clase que representa el catálogo general de la biblioteca.
 // Se encarga de almacenar, buscar y listar los productos (libros, películas, etc.)

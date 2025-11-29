@@ -1,7 +1,6 @@
 package biblioteca.simple.modelo;
 
 import biblioteca.simple.contratos.Prestable;
-import biblioteca.simple.modelo.Usuario;
 
 public  class Videojuego extends Producto implements Prestable{
 
@@ -10,14 +9,14 @@ public  class Videojuego extends Producto implements Prestable{
     private boolean prestado;
     private Usuario prestadoA;
 
-    public Videojuego(int id, String titulo, String anho,  String consola, String genero){
-        super(id, titulo, anho );
+    public Videojuego(int id, String titulo, String anho, Formato formato, String consola, String genero){
+        super(id, titulo, anho, formato );
         this.genero = genero;
         this.consola = consola;
     }
 
-    public Videojuego(String titulo, String anho, String consola, String genero) {
-        super(titulo, anho);
+    public Videojuego(String titulo, String anho, Formato formato, String consola, String genero) {
+        super(titulo, anho, formato);
         this.consola = consola;
         this.genero = genero;
     }

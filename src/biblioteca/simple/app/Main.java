@@ -3,8 +3,9 @@ package biblioteca.simple.app;
 import biblioteca.simple.contratos.Prestable;
 import biblioteca.simple.modelo.*;
 import biblioteca.simple.servicios.Catalogo;
+import biblioteca.simple.servicios.PersistenciaUsuarios;
 
-import java.sql.SQLOutput;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -31,6 +32,7 @@ public class Main {
         catalogo.alta(new Libro(2, "El nombre del viento", "2007", Formato.FISICO, "9788401352836", "Patrick Rothfuss"));
         catalogo.alta(new Pelicula(3, "El Padrino", "1972", Formato.FISICO, "rancis Ford Coppola", 175));
         catalogo.alta(new Pelicula(4, "Parásitos", "2019", Formato.FISICO, "Bong Joon-ho", 132));
+        catalogo.alta(new Videojuego(5, "Prince of Persia", "2023", Formato.FISICO, "Nintendo Switch", "Aventura"));
 
         usuarios.add(new Usuario(1, "Juan"));
         usuarios.add(new Usuario(2, "María"));
@@ -49,6 +51,9 @@ public class Main {
             System.out.println("3. Buscar por año");
             System.out.println("4. Prestar Producto");
             System.out.println("5. Devolver Producto");
+            System.out.println("6. Crear Usuario");
+            System.out.println("7. Exportar usuarios");
+            System.out.println("8. Importar usuarios");
             System.out.println("0. Salir");
             while(!sc.hasNextInt()) sc.next();
             op = sc.nextInt();
@@ -61,6 +66,9 @@ public class Main {
                 case 3 -> buscarPorAnio();
                 case 4 -> prestar();
                 case 5 -> devolver();
+                case 6 -> crearUsuario();
+                case 7 -> exportarUsuarios();
+                case 8 -> importarUsuarios();
                 case 0 -> System.out.println("Sayonara!");
                 default -> System.out.println("Opción no válida");
             }
@@ -94,6 +102,19 @@ public class Main {
         int a = sc.nextInt();
         sc.nextLine();
         catalogo.buscar(a).forEach(p -> System.out.println("- " + p));
+    }
+    private static Usuario crearUsuario(){
+        System.out.println("Id de usuario: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println("Nombre de usuario");
+        String nombre = sc.nextLine();
+
+        Usuario u = new Usuario(id, nombre);
+        usuarios.add(u);
+        System.out.println("Usuario: " + u.getNombre() + "ID: " + u.getId() + "Creado!" );
+        return u;
     }
 
     private static void listarUsuarios(){
@@ -154,14 +175,21 @@ public class Main {
 
                  listarUsuarios();
 
-                 System.out.println("Ingresa código de usurio");
+                 System.out.println("Ingresa código de usuario");
 
                  int cUsuario = sc.nextInt();
                  sc.nextLine();
                  Usuario u1 = getUsuarioPorCodigo(cUsuario);
 
                  if (u1 == null){
-                     System.out.println("Usuari ono encontrado");
+                     System.out.println("Usuario no encontrado. Quieres crearlo? Y/N");
+                     String respuesta = sc.nextLine().trim().toUpperCase();
+                     if(respuesta.equals("S")){
+                         u1 = crearUsuario();
+                     }else {
+                         System.out.println("Operacion cancelada");
+                         return;
+                     }
                  }
 
                  Prestable pPrestable = (Prestable) pEncontrado;
@@ -212,6 +240,27 @@ public class Main {
 
     }
 
+    private static void exportarUsuarios(){
+
+        try {
+            PersistenciaUsuarios.exportar(usuarios);
+            System.out.println("Usuarios exportados correctamente");
+        } catch (Exception e) {
+            System.out.println("Error al exportar usuarios" + e.getMessage() );
+        }
+    }
+
+    private static void importarUsuarios(){
+        try {
+            List<Usuario> cargados = PersistenciaUsuarios.importar();
+            usuarios.clear();
+            usuarios.addAll(cargados);
+            System.out.println("Usuarios cargados con exito");
+        }catch (Exception e){
+            System.out.println("Error al importar: " + e.getMessage());
+        }
+
+    }
 
 
 }
