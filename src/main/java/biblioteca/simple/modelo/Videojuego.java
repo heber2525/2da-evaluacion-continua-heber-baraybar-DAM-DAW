@@ -1,7 +1,7 @@
 package biblioteca.simple.modelo;
 
 import biblioteca.simple.contratos.Prestable;
-import biblioteca.simple.modelo.usuario;
+import biblioteca.simple.modelo.Usuario;
 
 public  class Videojuego extends Producto implements Prestable{
 
@@ -10,12 +10,10 @@ public  class Videojuego extends Producto implements Prestable{
     private boolean prestado;
     private Usuario prestadoA;
 
-    public Videojuego(int id, String titulo, String anho, String genero, Strign consola, String prestado, Usuario prestadoA){
+    public Videojuego(int id, String titulo, String anho,  String consola, String genero){
         super(id, titulo, anho );
         this.genero = genero;
         this.consola = consola;
-        this.prestado = false;
-        this.prestadoA = prestadoA;
     }
 
     public Videojuego(String titulo, String anho, String consola, String genero) {
@@ -23,5 +21,48 @@ public  class Videojuego extends Producto implements Prestable{
         this.consola = consola;
         this.genero = genero;
     }
+
+    public String getConsola() {
+        return consola;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setConsola(String consola) {
+        this.consola = consola;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+    @Override
+    public void  prestar(Usuario u){
+        if (prestado) throw new IllegalStateException("Ya prestado");
+        this.prestado = true;
+        this.prestadoA = u;
+    }
+    @Override
+    public void devolver() {
+        this.prestado = false;
+        this.prestadoA = null;
+    }
+
+    @Override
+    public boolean estaPrestado(){return this.prestado;}
+
+    @Override
+    public String toString() {
+        return "Videojuego{" +
+                "consola='" + consola + '\'' +
+                ", genero='" + genero + '\'' +
+                ", id=" + id +
+                ", titulo='" + titulo + '\'' +
+                ", anho='" + anho + '\'' +
+                '}';
+    }
+
 }
+
 
